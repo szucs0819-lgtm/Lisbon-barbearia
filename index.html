@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisbon Barbearia - Gestão de Elite</title>
+    
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="logo.png" alt="Lisbon Logo" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary);">
+                <h2>Lisbon <span>Barbearia</span></h2>
+            </div>
+            <nav class="nav-menu" id="main-nav">
+                <a href="#" class="nav-item active" data-target="view-agenda">
+                    <i class="fa-regular fa-calendar-check"></i> Agenda Atual
+                </a>
+                <a href="#" class="nav-item" data-target="view-pacientes">
+                    <i class="fa-solid fa-address-book"></i> Clientes
+                </a>
+                <a href="#" class="nav-item" data-target="view-relatorios">
+                    <i class="fa-solid fa-chart-line"></i> Relatórios
+                </a>
+                <a href="#" class="nav-item" data-target="view-marketing">
+                    <i class="fa-solid fa-bullhorn"></i> Comunicados
+                </a>
+                <a href="#" class="nav-item" data-target="view-configuracoes">
+                    <i class="fa-solid fa-sliders"></i> Ajustes
+                </a>
+            </nav>
+            
+            <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border);">
+                <p style="font-size: 11px; color: var(--text-muted); opacity: 0.5;">Master Barber OS v1.0</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- VIEW: AGENDA -->
+            <div id="view-agenda" class="view-section active">
+                <header class="top-header">
+                    <div>
+                        <h1>Dashboard de Agendamentos</h1>
+                        <p>Controle total sobre a sua cadeira e o seu tempo.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openModal()">
+                        <i class="fa-solid fa-plus-circle"></i> Novo Corte
+                    </button>
+                </header>
+
+                <div class="dashboard-grid">
+                    <!-- Appointments List -->
+                    <section class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-regular fa-clock"></i> Horários Marcados</h3>
+                            <div class="filters">
+                                <button class="filter-btn active" data-filter="all">Todos</button>
+                                <button class="filter-btn" data-filter="today">Hoje</button>
+                                <button class="filter-btn" data-filter="tomorrow">Amanhã</button>
+                            </div>
+                        </div>
+                        
+                        <div class="appointments-list" id="appointments-list">
+                            <div class="empty-state">Sincronizando agendamentos...</div>
+                        </div>
+                    </section>
+
+                    <!-- Spotlight Card -->
+                    <section class="card" style="text-align: center; padding: 50px 40px; position: relative; overflow: hidden; background: linear-gradient(135deg, var(--card-bg) 0%, #0a0e14 100%);">
+                        <div class="pulse-ring"></div>
+                        <div class="animated-razor">
+                            <i class="fa-solid fa-razor-blade"></i>
+                        </div>
+                        
+                        <h3 style="font-family: var(--font-heading); color: var(--primary); font-size: 26px; margin-bottom: 16px; z-index: 2;">Estilo & Precisão</h3>
+                        <p style="color: var(--text-muted); font-size: 14px; line-height: 1.7; z-index: 2; max-width: 280px; margin: 0 auto;">
+                            Sua agenda está em dia. Clique no botão de WhatsApp ao lado de cada cliente para enviar um lembrete com elegância e profissionalismo.
+                        </p>
+                        
+                        <div style="margin-top: 30px; z-index: 2;">
+                            <span class="status-badge">Sistema Online</span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- VIEW: CLIENTES -->
+            <div id="view-pacientes" class="view-section" style="display:none;">
+                <header class="top-header">
+                    <div>
+                        <h1>Fichário de Clientes</h1>
+                        <p>Mantenha o histórico e as preferências de cada cliente.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openPatientModal()">
+                        <i class="fa-solid fa-user-plus"></i> Novo Cliente
+                    </button>
+                </header>
+                <section class="card" style="padding: 32px;">
+                    <div id="patients-list">
+                        <!-- Table injected by JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- VIEW: RELATÓRIOS -->
+            <div id="view-relatorios" class="view-section" style="display:none;">
+                <header class="top-header">
+                    <div>
+                        <h1>Métricas de Performance</h1>
+                        <p>Acompanhe o crescimento e o faturamento da sua Barbearia.</p>
+                    </div>
+                </header>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px;">
+                    <div class="card" style="padding: 32px; text-align: center;">
+                        <h4 style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Atendimentos</h4>
+                        <h2 id="metric-consultas" style="color: var(--primary); font-size: 42px; font-family: var(--font-heading);">0</h2>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Total no sistema</p>
+                    </div>
+                    <div class="card" style="padding: 32px; text-align: center;">
+                        <h4 style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Faturamento Total</h4>
+                        <h2 id="metric-faturamento" style="color: var(--primary); font-size: 42px; font-family: var(--font-heading);">R$ 0</h2>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Estimado por serviços</p>
+                    </div>
+                    <div class="card" style="padding: 32px; text-align: center;">
+                        <h4 style="color: var(--text-muted); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Ticket Médio</h4>
+                        <h2 style="color: var(--primary); font-size: 42px; font-family: var(--font-heading);">R$ 65</h2>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Base atual</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid" style="grid-template-columns: 1.2fr 1.8fr;">
+                    <section class="card" style="padding: 32px;">
+                        <h3 style="margin-bottom: 24px;"><i class="fa-solid fa-chart-pie"></i> Serviços Populares</h3>
+                        <div style="position: relative; height:300px;">
+                            <canvas id="chartProcedimentos"></canvas>
+                        </div>
+                    </section>
+                    
+                    <section class="card" style="padding: 32px;">
+                        <h3 style="margin-bottom: 24px;"><i class="fa-solid fa-arrow-trend-up"></i> Evolução de Agendamentos</h3>
+                        <div style="position: relative; height:300px;">
+                            <canvas id="chartEvolucao"></canvas>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- VIEW: MARKETING & COMUNICADOS -->
+            <div id="view-marketing" class="view-section" style="display:none;">
+                <header class="top-header">
+                    <div>
+                        <h1>Central de Comunicados</h1>
+                        <p>Envie avisos, convites e lembretes para sua base de clientes.</p>
+                    </div>
+                </header>
+
+                <div class="dashboard-grid" style="grid-template-columns: 1.2fr 1.8fr;">
+                    <!-- Configuration & Template selection -->
+                    <section class="card" style="padding: 32px;">
+                        <h3 style="margin-bottom: 24px;"><i class="fa-solid fa-pen-to-square"></i> Configurar Mensagem</h3>
+                        
+                        <div class="input-group">
+                            <label>Tipo de Comunicado</label>
+                            <select id="mkt-template" onchange="updateTemplatePreview()" style="width:100%; padding:12px; border-radius:8px; background:var(--bg-app); border:1px solid var(--border); color:#fff;">
+                                <option value="agendamento">Convite para Agendamento (Fidelização)</option>
+                                <option value="feriado">Aviso de Feriado / Dia Não Útil</option>
+                                <option value="recesso">Aviso de Recesso / Férias</option>
+                                <option value="personalizado">Mensagem Personalizada</option>
+                            </select>
+                        </div>
+
+                        <div id="mkt-vars" style="margin-bottom: 20px;">
+                            <!-- Variables like date will appear here depending on template -->
+                        </div>
+
+                        <div class="input-group">
+                            <label>Prévia da Mensagem</label>
+                            <textarea id="mkt-preview" style="width:100%; height:150px; padding:12px; border-radius:8px; background:var(--bg-app); border:1px solid var(--border); color:#fff; font-family:inherit; resize:none;" readonly></textarea>
+                        </div>
+
+                        <button class="btn-primary full-width" onclick="sendBroadcast()" id="btn-broadcast">
+                            <i class="fa-brands fa-whatsapp"></i> Iniciar Disparo em Massa
+                        </button>
+                    </section>
+
+                    <!-- Client Selection -->
+                    <section class="card" style="padding: 32px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                            <h3><i class="fa-solid fa-users-check"></i> Selecionar Clientes</h3>
+                            <div style="font-size:12px; color:var(--text-muted);">
+                                <input type="checkbox" id="mkt-select-all" onchange="toggleSelectAllClients(this)"> Selecionar Todos
+                            </div>
+                        </div>
+                        
+                        <div id="mkt-client-list" style="max-height: 450px; overflow-y: auto;">
+                            <!-- Checkbox list of clients -->
+                            <p class="empty-state">Carregando base de clientes...</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div id="view-configuracoes" class="view-section" style="display:none;">
+                <header class="top-header">
+                    <div>
+                        <h1>Configurações Avançadas</h1>
+                        <p>Personalize as automações e gerencie o banco de dados local.</p>
+                    </div>
+                </header>
+                <section class="card" style="padding: 48px;">
+                    <h2 style="font-family: var(--font-heading); font-size: 24px; margin-bottom: 16px;">Banco de Dados Local</h2>
+                    <p style="color: var(--text-muted); line-height: 1.6;">O sistema utiliza o LocalStorage do seu navegador para manter os dados seguros e rápidos. Caso precise limpar tudo para começar do zero, utilize o botão abaixo.</p>
+                    
+                    <div style="margin-top: 40px; padding: 24px; border: 1px solid rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.05); border-radius: 12px;">
+                        <h4 style="color: #ef4444; margin-bottom: 12px;"><i class="fa-solid fa-triangle-exclamation"></i> Zona de Perigo</h4>
+                        <button class="btn-primary" onclick="localStorage.clear(); location.reload();" style="background: #ef4444;">
+                            <i class="fa-solid fa-broom"></i> Resetar Todo o Sistema
+                        </button>
+                        <p style="font-size: 12px; margin-top: 12px; color: #f87171;">Atenção: Todos os agendamentos e clientes serão removidos permanentemente.</p>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal for New Appointment -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Agendar Serviço</h2>
+                <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="appointment-form">
+                <div class="input-group">
+                    <label for="nome">Nome do Cliente</label>
+                    <input type="text" id="nome" required placeholder="Ex: Roberto Carlos">
+                </div>
+                <div class="input-group">
+                    <label for="telefone">WhatsApp / Celular</label>
+                    <input type="tel" id="telefone" required placeholder="Ex: 11988887777">
+                </div>
+                <div class="input-group-row">
+                    <div class="input-group">
+                        <label for="data">Data</label>
+                        <input type="date" id="data" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="horario">Horário</label>
+                        <input type="time" id="horario" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="procedimento">Serviço Especializado</label>
+                    <select id="procedimento" required>
+                        <option value="" disabled selected>O que vamos fazer?</option>
+                        <option value="Corte">Corte Social / Moderno</option>
+                        <option value="Barba">Barba (Terapia/Lâmina)</option>
+                        <option value="Combo">Combo (Cabelo + Barba)</option>
+                        <option value="Sobrancelha">Sobrancelha (Pinça/Navalha)</option>
+                        <option value="Tintura">Pintura / Camuflagem</option>
+                        <option value="Outro">Outro...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="barbeiro">Barbeiro Responsável</label>
+                    <select id="barbeiro" required>
+                        <option value="" disabled selected>Quem vai atender?</option>
+                        <option value="Will">Will</option>
+                        <option value="Boy">Boy</option>
+                    </select>
+                </div>
+                <div id="horario-error" style="color: #ef4444; font-size: 13px; font-weight: 600; margin-bottom: 20px; display: none;"></div>
+                <button type="submit" class="btn-primary full-width">Salvar Agendamento</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Modal for Client -->
+    <div class="modal-overlay" id="modal-paciente">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="patient-modal-title">Novo Cliente</h2>
+                <button class="close-btn" onclick="closePatientModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="patient-form">
+                <input type="hidden" id="paciente-id">
+                <div class="input-group">
+                    <label for="paciente-nome">Nome Completo</label>
+                    <input type="text" id="paciente-nome" required placeholder="Ex: Lucas Mendes">
+                </div>
+                <div class="input-group">
+                    <label for="paciente-telefone">WhatsApp</label>
+                    <input type="tel" id="paciente-telefone" required placeholder="Ex: 11988776655">
+                </div>
+                <button type="submit" class="btn-primary full-width">Confirmar Cadastro</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

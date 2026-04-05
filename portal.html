@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisbon Barbearia - Espaço do Cliente</title>
+    
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Using Admin CSS for base styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Portal-specific overrides */
+        body { overflow-y: auto; background: var(--bg-main); padding-bottom: 80px; }
+        
+        .portal-header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(180deg, var(--sidebar-bg) 0%, var(--bg-main) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .portal-header h1 {
+            font-family: var(--font-heading);
+            color: var(--primary);
+            font-size: 42px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .portal-header p {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+        
+        /* Booking Box */
+        .booking-card {
+            background: linear-gradient(145deg, var(--card-bg) 0%, #0d121c 100%);
+            border: 2px solid var(--primary);
+            padding: 60px 40px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 80px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .booking-card::before {
+            content: "\f0d1"; /* Razor Icon FontAwesome */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 150px;
+            color: var(--primary);
+            opacity: 0.03;
+            transform: rotate(-15deg);
+        }
+        
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            margin-top: 80px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        
+        /* Grooming Tips Grid */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+        
+        .tip-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 40px 30px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(197, 160, 89, 0.1);
+        }
+        
+        .tip-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+        
+        .tip-card h3 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+        }
+        
+        .tip-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        
+        /* Interactive Instruction Tabs */
+        .tabs-header {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            margin: 40px 0;
+            justify-content: center;
+        }
+        
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 14px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .dos-donts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        @media(max-width: 768px) { .dos-donts-grid { grid-template-columns: 1fr; } }
+        
+        .list-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+        }
+        
+        .list-box h4 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .list-box.do h4 { color: #10b981; }
+        .list-box.dont h4 { color: #f43f5e; }
+        
+        .list-box ul { list-style: none; }
+        .list-box li {
+            margin-bottom: 20px;
+            font-size: 15px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            line-height: 1.6;
+        }
+        
+        .list-box.do li::before { content: "\f058"; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #10b981; }
+        .list-box.dont li::before { content: "\f057"; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #f43f5e; }
+        
+        /* Payment Styles */
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .pay-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        
+        .pay-item i { font-size: 32px; color: var(--primary); }
+        .pay-item:hover { color: var(--primary); transform: scale(1.1); }
+
+        /* Style for Select Options */
+        select option {
+            background-color: #1a202c; /* Deep dark background */
+            color: #fff;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="portal-header">
+        <img src="logo.png" alt="Lisbon Logo" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+        <h1>Lisbon Barbearia</h1>
+        <p>Bem-vindo ao portal da sofisticação. Agende seu horário com os nossos mestres barbeiros e garanta um visual impecável.</p>
+    </header>
+
+    <div class="content-container">
+        
+        <!-- Booking Section -->
+        <div class="booking-card">
+            <h2 style="font-family: var(--font-heading); color: var(--primary); text-align: center; font-size: 32px; margin-bottom: 12px;">Agendar Atendimento</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom:48px;">Selecione sua data e descubra os horários disponíveis em nossa agenda.</p>
+            
+            <form id="portal-form" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                <div style="display: flex; flex-direction: column;">
+                    <label style="color:var(--text-muted); margin-bottom:10px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Nome do Cliente</label>
+                    <input type="text" id="p-nome" required placeholder="Digite seu nome..." style="padding:16px; border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:#fff; font-family:inherit; outline:none;">
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <label style="color:var(--text-muted); margin-bottom:10px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">WhatsApp / Contato</label>
+                    <input type="tel" id="p-telefone" required placeholder="(11) 98888-7777" style="padding:16px; border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:#fff; font-family:inherit; outline:none;">
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <label style="color:var(--text-muted); margin-bottom:10px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Serviço Desejado</label>
+                    <select id="p-procedimento" required style="padding:16px; border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:#fff; font-family:inherit; outline:none;">
+                        <option value="Corte">Corte Social / Moderno</option>
+                        <option value="Barba">Barba Therapy</option>
+                        <option value="Combo">Combo (Cabelo + Barba)</option>
+                        <option value="Sobrancelha">Design de Sobrancelha</option>
+                        <option value="Tintura">Pintura e Camuflagem</option>
+                        <option value="Outro">Ajuste / Outros</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <label style="color:var(--text-muted); margin-bottom:10px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Escolha o Barbeiro</label>
+                    <select id="p-barbeiro" required style="padding:16px; border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:#fff; font-family:inherit; outline:none;">
+                        <option value="" disabled selected>Com quem quer agendar?</option>
+                        <option value="Will">Will</option>
+                        <option value="Boy">Boy</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <label style="color:var(--text-muted); margin-bottom:10px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Escolha a Data</label>
+                    <input type="date" id="p-data" required style="padding:16px; border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:#fff; font-family:inherit; color-scheme: dark; outline:none;">
+                </div>
+                
+                <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                    <label style="color:var(--text-muted); margin-bottom:10px; font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Escolher Horário Disponível *</label>
+                    <select id="p-horarios" disabled required style="padding:16px; border-radius:10px; border:1px solid var(--border); background:rgba(255,255,255,0.05); color:var(--text-muted); font-family:inherit; opacity:0.6; transition: 0.3s; cursor:not-allowed; outline:none;">
+                        <option value="">Selecione uma data acima primeiro...</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="grid-column: 1 / -1; margin-top:20px; padding: 20px; font-size: 18px;">
+                    Confirmar Presença na Cadeira 💈
+                </button>
+            </form>
+
+            <div id="p-sucesso" style="display:none; text-align:center; padding: 40px; color: #10b981; animation: fadeInUp 0.5s ease;">
+                <i class="fa-solid fa-circle-check" style="font-size:70px; margin-bottom:20px;"></i>
+                <h3 style="font-family: var(--font-heading); font-size: 28px; margin-bottom: 12px;">Reserva Concluída!</h3>
+                <p style="color: var(--text-muted); font-size: 16px;">Obrigado! Sua vaga está garantida. Mandaremos uma confirmação oficial via WhatsApp em breve.</p>
+            </div>
+        </div>
+        
+
+        <!-- Post-Cut Instructions -->
+        <h2 class="section-title">Instruções de Manutenção</h2>
+        <p class="section-subtitle">Escolha o serviço realizado e veja como mantê-lo por mais tempo:</p>
+
+        <div class="tabs-header">
+            <button class="tab-btn active" onclick="openTab('tab-corte')">Corte (Social/Faded)</button>
+            <button class="tab-btn" onclick="openTab('tab-barba')">Barba / Navalha</button>
+            <button class="tab-btn" onclick="openTab('tab-tintura')">Tintura / Camuflagem</button>
+        </div>
+
+        <!-- ABA CORTE -->
+        <div id="tab-corte" class="tab-content active">
+            <div class="dos-donts-grid">
+                <div class="list-box do">
+                    <h4>O que FAZER</h4>
+                    <ul>
+                        <li>Pentear o cabelo no sentido natural do nascimento para manter o degradê alinhado.</li>
+                        <li>Utilizar um secador após o banho para dar volume e fixação aos penteados modernos.</li>
+                        <li>Garantir o retoque a cada 20 ou 30 dias para não perder o desenho do corte.</li>
+                    </ul>
+                </div>
+                <div class="list-box dont">
+                    <h4>O que NÃO FAZER</h4>
+                    <ul>
+                        <li>Não utilizar géis de baixa qualidade com álcool (causam ressecamento e caspa).</li>
+                        <li>Evitar dormir com o cabelo molhado para não comprometer a saúde do couro cabeludo.</li>
+                        <li>Não tente "limpar" o pezinho ou a nuca sozinho em casa com prestobarba comum.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA BARBA -->
+        <div id="tab-barba" class="tab-content">
+            <div class="dos-donts-grid">
+                <div class="list-box do">
+                    <h4>O que FAZER</h4>
+                    <ul>
+                        <li>Fazer compressas de água morna se notar pelos encravados após a navalha.</li>
+                        <li>Pentear a barba com pentes de madeira para evitar a eletricidade estática (frizz).</li>
+                        <li>Usar Balm para modelar os fios maiores e diminuir o volume desordenado.</li>
+                    </ul>
+                </div>
+                <div class="list-box dont">
+                    <h4>O que NÃO FAZER</h4>
+                    <ul>
+                        <li>NÃO coçar o rosto se a barba estiver crescendo; utilize óleos para acalmar a pele.</li>
+                        <li>EVITE alimentos que possam sujar a área do bigode antes de importantes compromissos.</li>
+                        <li>Não subestime a hidratação; barba seca quebra e fica com aspecto descuidadado.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA TINTURA -->
+        <div id="tab-tintura" class="tab-content">
+            <div class="dos-donts-grid">
+                <div class="list-box do">
+                    <h4>O que FAZER</h4>
+                    <ul>
+                        <li>Utilizar shampoos suaves projetados para cabelos coloridos.</li>
+                        <li>Lavar com água fria ou morna; a água muito quente desbota a tinta rapidamente.</li>
+                        <li>Aplicar protetor solar capilar se for passar muito tempo exposto ao sol.</li>
+                    </ul>
+                </div>
+                <div class="list-box dont">
+                    <h4>O que NÃO FAZER</h4>
+                    <ul>
+                        <li>NÃO utilize shampoos de limpeza profunda ou anti-caspa (eles removem o pigmento).</li>
+                        <li>Evite piscinas cloradas nos primeiros 3 dias após a aplicação da tintura.</li>
+                        <li>Não tente retocar a raiz ou as pontas sem a supervisão de um profissional barber.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payments and Ease -->
+        <h2 class="section-title">Facilidades no Pagamento</h2>
+        <p class="section-subtitle">Ambiente moderno preparado para seu conforto total.</p>
+        
+        <div class="payment-methods">
+            <div class="pay-item">
+                <i class="fa-brands fa-pix"></i>
+                <span>Pix com Bônus</span>
+            </div>
+            <div class="pay-item">
+                <i class="fa-solid fa-credit-card"></i>
+                <span>Crédito até 3x</span>
+            </div>
+            <div class="pay-item">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Assinaturas Mensais</span>
+            </div>
+            <div class="pay-item">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <span>Pagamento via App</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Availability Logic ---
+        const businessHours = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+        const inputData = document.getElementById('p-data');
+        const hSelect = document.getElementById('p-horarios');
+        
+        // Block past dates
+        inputData.min = new Date().toISOString().split("T")[0];
+
+        inputData.addEventListener('change', function() {
+            const dataSec = this.value;
+            if (!dataSec) return;
+
+            // Load logic matching admin's storage
+            const dbConsultas = JSON.parse(localStorage.getItem('barberWeb_consultas') || '[]');
+            const bookedH = dbConsultas
+                            .filter(c => c.data === dataSec)
+                            .map(c => c.horario);
+            
+            const remaining = businessHours.filter(h => !bookedH.includes(h));
+
+            hSelect.disabled = false;
+            hSelect.style.cursor = 'pointer';
+            hSelect.style.opacity = '1';
+            hSelect.style.color = '#fff';
+
+            if(remaining.length === 0) {
+                hSelect.innerHTML = '<option value="" style="background-color: #111827;">Poxa! Nossos mestres estão com a agenda lotada. Tente outro dia.</option>';
+                hSelect.disabled = true;
+            } else {
+                hSelect.innerHTML = '<option value="" style="background-color: #111827;">Escolha um dos horários disponíveis:</option>' + 
+                                     remaining.map(h => `<option value="${h}" style="background-color: #111827;">${h}</option>`).join('');
+            }
+        });
+
+        // Booking Submit
+        document.getElementById('portal-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const d = document.getElementById('p-data').value;
+            const h = document.getElementById('p-horarios').value;
+            const dbConsultas = JSON.parse(localStorage.getItem('barberWeb_consultas') || '[]');
+
+            // Safety check
+            if (dbConsultas.some(c => c.data === d && c.horario === h)) {
+                alert("Ops! Alguém já reservou este horário segundos atrás. Por favor, escolha outro.");
+                return;
+            }
+
+            const newObj = {
+                id: "BWEB_" + Date.now().toString(),
+                nome: document.getElementById('p-nome').value,
+                telefone: document.getElementById('p-telefone').value,
+                procedimento: document.getElementById('p-procedimento').value,
+                barbeiro: document.getElementById('p-barbeiro').value,
+                data: d,
+                horario: h
+            };
+
+            // Save to Agenda
+            dbConsultas.push(newObj);
+            localStorage.setItem('barberWeb_consultas', JSON.stringify(dbConsultas));
+
+            // Save/Update Customer Record
+            const dbPatients = JSON.parse(localStorage.getItem('barberWeb_pacientes') || '[]');
+            if(!dbPatients.some(p => p.telefone === newObj.telefone)){
+                dbPatients.push({id: "PX_" + Date.now(), nome: newObj.nome, telefone: newObj.telefone});
+                localStorage.setItem('barberWeb_pacientes', JSON.stringify(dbPatients));
+            }
+
+            // UI Switch
+            document.getElementById('portal-form').style.display = 'none';
+            document.getElementById('p-sucesso').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Tab System
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
